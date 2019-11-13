@@ -52,6 +52,9 @@ exports.main = async (event, context) => {
 
   app.router('start', commonService.start)
 
+  app.router('nextDay', commonService.nextDay)
+
+
   app.router('init', commonService.init)
 
   app.router('applyJob', userJobService.applyJob)
@@ -75,9 +78,9 @@ exports.main = async (event, context) => {
   app.router('applyLuck', userLuckService.applyLuck)
 
   app.router('fundMarket', userFundService.market)
-
   app.router('fundTrade', userFundService.trade)
-
+  app.router('buyFund', userFundService.buyFund)
+  app.router('sellFund', userFundService.sellFund)
 
   app.router('refresh', commonService.refresh)
   // app.router('data', async (ctx, next) => {

@@ -2,6 +2,35 @@ const cloud = require('wx-server-sdk')
 
 class UserFundDao {
 
+  async deleteDetailByUserFundId(userFundId) {
+    const db = cloud.database()
+    let data = {}
+    await db.collection('user_fund_detail').where({
+      _userFundId: userFundId
+    }).remove().then(res => {
+      
+    })
+    return data
+  }
+
+  async deleteMarketById(marketId) {
+    const db = cloud.database()
+    let data = {}
+    await db.collection('user_fund_market').doc(marketId).remove().then(res => {
+
+    })
+    return data
+  }
+
+  async deleteFundById(userFundId) {
+    const db = cloud.database()
+    let data = {}
+    await db.collection('user_fund').doc(userFundId).remove().then(res => {
+
+    })
+    return data
+  }
+
   async getListByUserId(userId) {
     const db = cloud.database()
     let data = []
@@ -24,6 +53,7 @@ class UserFundDao {
       _userId: userId,
       _fundId: fundId
     }).get().then(res => {
+
       if (res.data.length > 0) {
         data = res.data[0]
       } else {
@@ -102,6 +132,26 @@ class UserFundDao {
       const id = saveData['_id']
       delete saveData['_id']
       await db.collection('user_fund_market').doc(id).update({
+        data: saveData
+      }).then(res => {
+      })
+    }
+    return data
+  }
+
+  async saveDetail(saveData, persistent) {
+    const db = cloud.database()
+    let data = {}
+    if (persistent === 'add') {
+      await db.collection('user_fund_detail').add({
+        data: saveData
+      }).then(res => {
+        data = res._id
+      })
+    } else if (persistent === 'update') {
+      const id = saveData['_id']
+      delete saveData['_id']
+      await db.collection('user_fund_detail').doc(id).update({
         data: saveData
       }).then(res => {
       })
